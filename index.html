@@ -18,7 +18,7 @@
             background-color: #222;
             color: #fff;
             text-align: center;
-            padding: 1em 0;
+            padding: 0px;
         }
     
         h4 {
@@ -42,7 +42,15 @@
         nav a:hover {
             color: #ffd700;
         }
-
+        
+        .banner {
+            width: 100%;
+            max-width: 100%;
+            background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url(board.jpg);
+            background-size: cover;
+            background-position: center;
+            padding: 10px;
+        }
         .gallery-section {
             display: flex;
             flex-wrap: wrap;
@@ -81,12 +89,12 @@
     </style>
 </head>
 <body>
-
     <header>
-        <h1 id="home">Thales</h1> 
-        <h4>Batch 2022-2023</h4>
+        <div class="banner">
+         <h1 id="home">Thales</h1> 
+         <h4>Batch 2022-2023</h4>
+        </div>
     </header>
-
     <nav>
         <a href="#" onclick="toggleSection('images-section')">Images</a>
         <a href="#" onclick="toggleSection('videos-section')">Videos</a>
@@ -101,9 +109,8 @@
     </section>
 
     <div class="w3-hide-small">    
-        <a href="#home" class="w3-button"><b>Back to Top</b></a>
+        <a href="#home" class="w3-black w3-button"><b>Back to Top</b></a>
     </div>
-
     <footer>
         <p>&copy; 2024 Thales Gallery. All rights reserved.</p>
     </footer>
