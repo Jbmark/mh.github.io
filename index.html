@@ -1,950 +1,1189 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Gallery</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thales Gallery — Batch 2022-2023</title>
     <link rel="shortcut icon" type="x-icon" href="logoo.jpg">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
+        /* Modern Dark Theme Base Setup */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            background-color: #f4f4f4;
-            color: #333;
         }
 
-        header {
-            background-color: #222;
-            color: #fff;
-            text-align: center;
-            padding: 0px;
+       :root{
+    --bg:#f8fafc;
+    --surface:#ffffff;
+    --surface2:#eef3f8;
+    --text:#1f2937;
+    --muted:#64748b;
+    --primary:#1E3A5F;
+    --gold:#D4AF37;
+    --border:#d8e2ec;
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+        /* Hero Banner Section */
+        header{
+    position:relative;
+    width:100%;
+    min-height:60vh;
+    display:flex;
+    align-items:center;
+    padding:60px 8%;
+    background-image:
+        linear-gradient(to right,
+        rgba(30,58,95,.82),
+        rgba(30,58,95,.45)),
+        url("t1.jpg");
+    background-size:cover;
+    background-position:center;
+}
+        .hero{
+    position:relative;
+    overflow:hidden;
+}
+
+.slides{
+    position:absolute;
+    inset:0;
+}
+
+.slide{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    transition:opacity 1.2s ease;
+}
+
+.slide.active{
+    opacity:1;
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to right,
+        rgba(30,58,95,.75),
+        rgba(30,58,95,.35)
+    );
+}
+
+.header-content{
+    position:relative;
+    max-width:620px;
+    z-index:3;
+}
+        .badge{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    color:#fff;
+    padding:8px 16px;
+    border-radius:999px;
+    font-size:.85rem;
+    letter-spacing:1.5px;
+    margin-bottom:18px;
+}
+        h1{
+    font-size:4rem;
+    color:white;
+    font-weight:800;
+    margin-bottom:12px;
+}
+       .subtitle{
+    font-size:1.2rem;
+    color:#f8fafc;
+    opacity:.95;
+}
+.hero-buttons{
+    display:flex;
+    gap:15px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+
+.btn-primary,
+.btn-secondary{
+    padding:14px 24px;
+    border-radius:999px;
+    text-decoration:none;
+    font-weight:700;
+    transition:.3s;
+}
+
+.btn-primary{
+    background:white;
+    color:var(--primary);
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+}
+
+.btn-secondary{
+    border:2px solid white;
+    color:white;
+}
+
+.btn-secondary:hover{
+    background:white;
+    color:var(--primary);
+}
+     /* Filter Tab Bar Navigation */
+        nav{
+    position:sticky;
+    top:10px;
+    z-index:1000;
+    width:92%;
+    margin:18px auto;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    padding:12px;
+    background:rgba(255,255,255,.8);
+    backdrop-filter:blur(15px);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+}
+        nav a{
+    color:var(--muted);
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:999px;
+    transition:.3s;
+    font-weight:600;
+}
+        nav a:hover,
+nav a.active{
+    background:var(--primary);
+    color:white;
+}
+        
+        /* Modern Flexible Responsive Grid Layout */
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
-    
-        h4 {
+        .gallery-section{
+    column-width:280px;
+    column-gap:20px;
+}
+#videos-section{
+    columns: unset;
+    column-width: unset;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+#videos-section .gallery-item{
+    display: block;
+    margin-bottom: 0;
+}
+
+.gallery-item{
+    display:inline-block;
+    width:100%;
+    margin-bottom:20px;
+}
+
+       .gallery-item{
+    position:relative;
+    background:var(--surface);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    transition:.35s;
+    border:1px solid var(--border);
+}
+        .gallery-item:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 40px rgba(30,58,95,.15);
+}
+
+        .gallery-item img, .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-item::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        transparent,
+        rgba(30,58,95,.65)
+    );
+    opacity:0;
+    transition:.3s;
+}
+
+.gallery-item:hover::after{
+    opacity:1;
+}
+.gallery-item::before{
+    content:"🔍";
+    position:absolute;
+    top:15px;
+    right:15px;
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:white;
+    border-radius:50%;
+    opacity:0;
+    transition:.3s;
+    z-index:2;
+}
+
+.gallery-item:hover::before{
+    opacity:1;
+}
+.gallery-item{
+    opacity:0;
+    transform:translateY(25px);
+    transition:.6s;
+}
+
+.gallery-item.show{
+    opacity:1;
+    transform:translateY(0);
+}
+.gallery-item{
+
+backdrop-filter:blur(12px);
+
+}
+
+.stat-card{
+
+backdrop-filter:blur(10px);
+
+}
+
+.featured .carousel{
+
+box-shadow:0 20px 45px rgba(0,0,0,.12);
+
+}
+
+.timeline .content:hover{
+
+transform:translateY(-4px);
+
+transition:.3s;
+
+}
+.stats{
+    max-width:1100px;
+    margin:-40px auto 35px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    padding:0 20px;
+    position:relative;
+    z-index:5;
+}
+
+.stat-card{
+    background:white;
+    padding:28px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+}
+
+.stat-card h2{
+    color:var(--primary);
+    font-size:2rem;
+    margin-bottom:8px;
+}
+
+.stat-card p{
+    color:var(--muted);
+}
+
+        /* Diagnostic Box Styling */
+        .status-msg {
+            grid-column: 1 / -1;
+            background-color: #1c1d24;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
             color: #ffd700;
-        }
-        nav {
-            text-align: center;
-            padding: 1em;
-            background-color: #333;
+            font-family: monospace;
+            margin-bottom: 20px;
         }
 
-        nav a {
-            color: #fff;
-            margin: 0 10px;
+        .back-to-top-container {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .back-to-top-btn {
+            background-color: #12141c;
+            color: #ffffff;
+            padding: 12px 28px;
             text-decoration: none;
             font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s ease-in-out;
+            font-size: 0.9rem;
+            border-radius: 30px;
+            border: 1px solid #1f2833;
+            display: inline-block;
         }
+        .gallery-toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:35px;
+}
 
-        nav a:hover {
-            color: #ffd700;
-        }
-        
-        .banner {
-            width: 100%;
-            max-width: 100%;
-            background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url(board.jpg);
-            background-size: cover;
-            background-position: center;
-            padding: 10px;
-        }
-        .gallery-section {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 20px;
-        }
+.search-box{
+    flex:1;
+    display:flex;
+    align-items:center;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:50px;
+    padding:12px 18px;
+    box-shadow:var(--shadow);
+}
 
-        .gallery-item {
-            width: calc(20% - 20px); /* Adjust the width based on your preference */
-            margin: 10px;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-            cursor: pointer;
-            background-color: #fff;
-        }
+.search-box span{
+    margin-right:10px;
+}
 
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
+.search-box input{
+    border:none;
+    outline:none;
+    width:100%;
+    background:transparent;
+    font-size:15px;
+}
 
-        .gallery-item img {
-            width: 100%;
-            height: 200px; /* Set a fixed height for the images */
-            object-fit: cover;
-            border-radius: 8px 8px 0 0;  /* Rounded corners only at the top */
-        }
+.filter-chips{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
 
-        footer {
-            text-align: center;
-            padding: 1em;
-            background-color: #222; 
-            color: #fff;
-        }
+.chip{
+    padding:10px 18px;
+    border:none;
+    border-radius:999px;
+    background:white;
+    color:var(--primary);
+    cursor:pointer;
+    font-weight:600;
+    box-shadow:var(--shadow);
+    transition:.3s;
+}
+
+.chip:hover,
+.chip.active{
+    background:var(--primary);
+    color:white;
+}
+.lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.lightbox img{
+    max-width:92%;
+    max-height:90%;
+    border-radius:16px;
+}
+
+.close-lightbox{
+    position:absolute;
+    top:25px;
+    right:35px;
+    font-size:45px;
+    color:white;
+    cursor:pointer;
+}
+.video-card{
+    position:relative;
+}
+
+.video-card video{
+    width:100%;
+    display:block;
+}
+
+.video-play{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:rgba(255,255,255,.9);
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.video-card:hover .video-play{
+    transform:translate(-50%,-50%) scale(1.1);
+}
+.floating-actions{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    z-index:999;
+}
+
+.fab{
+    width:56px;
+    height:56px;
+    border:none;
+    border-radius:50%;
+    background:var(--primary);
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:var(--shadow);
+    text-decoration:none;
+    transition:.3s;
+}
+
+.fab:hover{
+    transform:translateY(-3px);
+}
+.menu-btn{
+    display:none;
+    background:none;
+    border:none;
+    font-size:26px;
+    cursor:pointer;
+    color:var(--primary);
+}
+
+.drawer{
+    position:fixed;
+    left:-280px;
+    top:0;
+    width:260px;
+    height:100%;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(20px);
+    box-shadow:var(--shadow);
+    padding:25px;
+    transition:.35s;
+    z-index:2000;
+}
+
+.drawer.open{
+    left:0;
+}
+
+.drawer a{
+    display:block;
+    padding:15px 0;
+    text-decoration:none;
+    color:var(--primary);
+    font-weight:600;
+}
+
+.close-btn{
+    background:none;
+    border:none;
+    font-size:30px;
+    float:right;
+    cursor:pointer;
+}
+
+@media(max-width:768px){
+
+.menu-btn{
+display:block;
+}
+
+.nav-links{
+display:none;
+}
+
+}
+.featured{
+max-width:1200px;
+margin:60px auto;
+padding:0 20px;
+}
+
+.carousel{
+position:relative;
+overflow:hidden;
+border-radius:22px;
+}
+
+.carousel-track{
+display:flex;
+transition:.5s;
+}
+
+.carousel-track img{
+width:100%;
+flex:0 0 100%;
+height:450px;
+object-fit:cover;
+}
+
+.carousel-btn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+width:48px;
+height:48px;
+border-radius:50%;
+border:none;
+background:rgba(255,255,255,.9);
+cursor:pointer;
+font-size:28px;
+}
+
+.prev{left:15px;}
+
+.next{right:15px;}
+.timeline{
+max-width:900px;
+margin:70px auto;
+padding:20px;
+position:relative;
+}
+
+.timeline::before{
+content:"";
+position:absolute;
+left:20px;
+top:40px;
+bottom:0;
+width:4px;
+background:var(--gold);
+}
+
+.timeline-item{
+display:flex;
+gap:20px;
+margin-bottom:40px;
+}
+
+.dot{
+width:18px;
+height:18px;
+background:var(--gold);
+border-radius:50%;
+margin-top:8px;
+flex-shrink:0;
+}
+
+.content{
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:var(--shadow);
+}
+.quote-section{
+max-width:900px;
+margin:70px auto;
+padding:50px;
+text-align:center;
+background:linear-gradient(135deg,var(--primary),#294d78);
+color:white;
+border-radius:28px;
+}
+
+blockquote{
+font-size:1.8rem;
+font-style:italic;
+margin:20px 0;
+}
+.lb-prev,
+.lb-next{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+background:rgba(255,255,255,.9);
+border:none;
+width:55px;
+height:55px;
+border-radius:50%;
+font-size:28px;
+cursor:pointer;
+}
+
+.lb-prev{left:30px;}
+
+.lb-next{right:30px;}
+
+    footer{
+    text-align:center;
+    padding:40px;
+    background:white;
+    color:var(--muted);
+    border-top:1px solid var(--border);
+}
     </style>
 </head>
 <body>
-    <header>
-        <div class="banner">
-         <h1 id="home">Thales</h1> 
-         <h4>Batch 2022-2023</h4>
-        </div>
-    </header>
-    <nav>
-        <a href="#" onclick="toggleSection('images-section')">Images</a>
-        <a href="#" onclick="toggleSection('videos-section')">Videos</a>
-    </nav>
 
-    <section id="images-section" class="gallery-section">
-        <!-- Gallery items for images will be dynamically added here -->
-    </section>
+    <header class="hero" id="home">
 
-    <section id="videos-section" class="gallery-section">
-        <!-- Gallery items for videos will be dynamically added here -->
-    </section>
-
-    <div class="w3-hide-small">    
-        <a href="#home" class="w3-black w3-button"><b>Back to Top</b></a>
+    <div class="slides">
+        <div class="slide active" style="background-image:url('board.jpg')"></div>
+        <div class="slide" style="background-image:url('assets/images/t1.jpg')"></div>
+        <div class="slide" style="background-image:url('assets/images/Thales.jpg')"></div>
     </div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="header-content">
+        <span class="badge">Batch 2022–2023</span>
+
+        <h1>Thales Memories</h1>
+
+        <p class="subtitle">
+            Every classroom, every laugh, every unforgettable memory.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#gallery" class="btn-primary">Explore Gallery</a>
+            <a href="#" onclick="toggleSection('videos-section')" class="btn-secondary">Watch Videos</a>
+        </div>
+    </div>
+
+</header>
+<section class="stats">
+
+    <div class="stat-card">
+        <h2 class="counter" data-target="314">0</h2>
+        <p>Photos</p>
+    </div>
+
+    <div class="stat-card">
+        <h2 class="counter" data-target="50">0</h2>
+        <p>Videos</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>2022–2023</h2>
+        <p>Batch</p>
+    </div>
+
+</section>
+
+    <nav>
+
+    <button id="menuBtn" class="menu-btn">☰</button>
+
+    <div class="nav-links">
+        <a id="tab-images" onclick="toggleSection('images-section')" class="active">Photos</a>
+        <a id="tab-videos" onclick="toggleSection('videos-section')">Videos</a>
+        <a href="#featured">Featured</a>
+        <a href="#timeline">Journey</a>
+    </div>
+
+</nav>
+<section id="featured" class="featured">
+
+<h2>⭐ Featured Memories</h2>
+
+<div class="carousel">
+
+<button class="carousel-btn prev">‹</button>
+
+<div class="carousel-track">
+
+<img src="assets/images/t2.jpg">
+
+<img src="assets/images/t1.jpg">
+
+<img src="assets/images/Thales.jpg">
+
+</div>
+
+<button class="carousel-btn next">›</button>
+
+</div>
+
+</section>
+
+<div id="drawer" class="drawer">
+
+    <button id="closeDrawer" class="close-btn">×</button>
+
+    <a href="#home">🏠 Home</a>
+    <a href="#gallery">📷 Gallery</a>
+    <a href="#featured">⭐ Featured</a>
+    <a href="#timeline">📖 Journey</a>
+
+</div>
+    <div class="gallery-container" id="gallery">
+        <!-- Diagnostic Box to troubleshoot errors instantly -->
+<div class="gallery-toolbar">
+
+    <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Search memories...">
+    </div>
+
+    <div class="filter-chips">
+        <button class="chip active">All</button>
+        <button class="chip">Classroom</button>
+        <button class="chip">Graduation</button>
+        <button class="chip">Events</button>
+        <button class="chip">Group</button>
+    </div>
+
+</div>
+        <section id="images-section" class="gallery-section">
+            <!-- Images load here -->
+        </section>
+
+        <section id="videos-section" class="gallery-section" style="display: none;">
+            <!-- Videos load here -->
+        </section>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+
+<button class="lb-prev">‹</button>
+
+<img id="lightbox-image">
+
+<button class="lb-next">›</button>
+
+<span class="close-lightbox">&times;</span>
+
+</div>
+
+    <span class="close-lightbox">&times;</span>
+
+    <img id="lightbox-image">
+
+</div>
+
+    <div class="back-to-top-container">    
+        <a href="#home" class="back-to-top-btn">Back to Top</a>
+    </div>
+
+    <div class="floating-actions">
+
+    <a href="#home" class="fab">🏠</a>
+
+    <button id="topBtn" class="fab">↑</button>
+
+</div>
+<section id="timeline" class="timeline">
+
+<h2>📖 Our Journey</h2>
+
+<div class="timeline-item">
+
+<div class="dot"></div>
+
+<div class="content">
+
+<h3>2022</h3>
+
+<p>New classmates. New friendships. New beginnings.</p>
+
+</div>
+
+</div>
+
+<div class="timeline-item">
+
+<div class="dot"></div>
+
+<div class="content">
+
+<h3>2023</h3>
+
+<p>Graduation, celebrations, and memories that stay forever.</p>
+
+</div>
+
+</div>
+
+</section>
+<section class="quote-section">
+
+<h2>Class Motto</h2>
+
+<blockquote>
+
+"Once classmates, forever memories."
+
+</blockquote>
+
+<p>— Thales Batch 2022–2023</p>
+
+</section>
     <footer>
-        <p>&copy; 2024 Thales Gallery. All rights reserved.</p>
+        <p>&copy; 2024- Thales Gallery. All rights reserved.</p>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Sample data with paths to images and videos
-            const galleryData = [
-                { type: 'image', src: 't1.jpg' },
-                { type: 'image', src: 't2.jpg' },
-                { type: 'image', src: 't3.jpg' },
-                { type: 'image', src: 't4.jpg' },
-                { type: 'image', src: 't5.jpg' },
-                { type: 'image', src: 't6.jpg' },
-                { type: 'image', src: 't7.jpg' },
-                { type: 'image', src: 'tb1.jpg' },
-                { type: 'image', src: 'tb2.jpg' },
-                { type: 'image', src: 'tg1.jpg' },
-                { type: 'image', src: 'tg2.jpg' },
-                { type: 'image', src: 'Thales boys.jpg' },
-                { type: 'image', src: 'Thales.jpg' },
-                { type: 'image', src: 't8.jpg' },
-                { type: 'image', src: 't9.jpg' },
-                { type: 'image', src: '1.webp'}, 
-                { type: 'image', src: '2.jpeg'}, 
-                { type: 'image', src: '3.jpeg'},
-                { type: 'image', src: '4.jpeg'}, 
-                { type: 'image', src: '5.jpeg'}, 
-                { type: 'image', src: '6.jpeg'}, 
-                { type: 'image', src: '7.jpeg'},  
-                { type: 'image', src: '8.webp'}, 
-                { type: 'image', src: '9.jpeg'}, 
-                { type: 'image', src: '10.jpeg'}, 
-                { type: 'image', src: '11.jpeg'}, 
-                { type: 'image', src: '12.jpeg'}, 
-                { type: 'image', src: '13.jpeg'}, 
-                { type: 'image', src: '14.jpeg'}, 
-                { type: 'image', src: '15.jpeg'}, 
-                { type: 'image', src: '16.jpeg'}, 
-                { type: 'image', src: '17.jpeg'}, 
-                { type: 'image', src: '18.jpeg'}, 
-                { type: 'image', src: '19.jpeg'}, 
-                { type: 'image', src: '20.jpeg'}, 
-                { type: 'image', src: '21.jpeg'}, 
-                { type: 'image', src: '22.jpeg'}, 
-                { type: 'image', src: '23.jpeg'}, 
-                { type: 'image', src: '24.jpeg'}, 
-                { type: 'image', src: '25.jpeg'}, 
-                { type: 'image', src: '26.jpeg'}, 
-                { type: 'image', src: '27.jpeg'}, 
-                { type: 'image', src: '28.jpeg'}, 
-                { type: 'image', src: '29.jpeg'}, 
-                { type: 'image', src: '30.jpeg'}, 
-                { type: 'image', src: '31.jpeg'}, 
-                { type: 'image', src: '32.jpeg'}, 
-                { type: 'image', src: '33.jpeg'}, 
-                { type: 'image', src: '34.jpeg'}, 
-                { type: 'image', src: '35.jpeg'}, 
-                { type: 'image', src: '36.jpeg'}, 
-                { type: 'image', src: '37.jpeg'}, 
-                { type: 'image', src: '38.jpeg'}, 
-                { type: 'image', src: '39.webp'}, 
-                { type: 'image', src: '40.webp'}, 
-                { type: 'image', src: '41.jpeg'}, 
-                { type: 'image', src: '42.jpeg'}, 
-                { type: 'image', src: '43.jpeg'}, 
-                { type: 'image', src: '44.jpeg'}, 
-                { type: 'image', src: '45.jpeg'}, 
-                { type: 'image', src: '46.jpeg'}, 
-                { type: 'image', src: '47.webp'}, 
-                { type: 'image', src: '48.webp'}, 
-                { type: 'image', src: '49.jpeg'}, 
-                { type: 'image', src: '50.jpeg'}, 
-                { type: 'image', src: '51.jpeg'},
-                { type: 'image', src: '52.jpeg'}, 
-                { type: 'image', src: '53.jpeg'},  
-                { type: 'image', src: '54.jpeg'}, 
-                { type: 'image', src: '55.jpeg'}, 
-                { type: 'image', src: '56.jpeg'}, 
-                { type: 'image', src: '57.jpeg'}, 
-                { type: 'image', src: '58.jpeg'}, 
-                { type: 'image', src: '59.jpeg'}, 
-                { type: 'image', src: '60.jpeg'}, 
-                { type: 'image', src: '61.jpeg'}, 
-                { type: 'image', src: '62.jpeg'}, 
-                { type: 'image', src: '63.jpeg'}, 
-                { type: 'image', src: '64.jpeg'}, 
-                { type: 'image', src: '65.jpeg'}, 
-                { type: 'image', src: '66.jpeg'}, 
-                { type: 'image', src: '67.jpeg'}, 
-                { type: 'image', src: '69.jpeg'}, 
-                { type: 'image', src: '70.jpeg'}, 
-                { type: 'image', src: '71.jpeg'}, 
-                { type: 'image', src: '72.jpeg'}, 
-                { type: 'image', src: '73.jpeg'}, 
-                { type: 'image', src: '74.jpeg'}, 
-                { type: 'image', src: '75.jpeg'}, 
-                { type: 'image', src: '76.jpeg'}, 
-                { type: 'image', src: '77.jpeg'},
-                { type: 'image', src: '78.jpeg'}, 
-                { type: 'image', src: '79.webp'},
-                { type: 'image', src: '80.jpeg'},
-                { type: 'image', src: '81.jpeg'},
-                { type: 'image', src: '82.jpeg'},
-                { type: 'image', src: '83.jpeg'},
-                { type: 'image', src: '84.jpeg'},
-                { type: 'image', src: '85.jpeg'},
-                { type: 'image', src: '86.jpeg'},
-                { type: 'image', src: '87.jpeg'},
-                { type: 'image', src: '88.jpeg'},
-                { type: 'image', src: '89.jpeg'},
-                { type: 'image', src: '90.jpeg'},
-                { type: 'image', src: '91.jpeg'},
-                { type: 'image', src: '92.jpeg'},
-                { type: 'image', src: '93.jpeg'},
-                { type: 'image', src: '94.jpeg'},
-                { type: 'image', src: '95.jpeg'},
-                { type: 'image', src: '96.jpeg'},
-                { type: 'image', src: '97.jpeg'},
-                { type: 'image', src: '98.jpeg'},
-                { type: 'image', src: '99.jpeg'},
-                { type: 'image', src: '100.jpeg'},
-                { type: 'image', src: '101.jpeg'},
-                { type: 'image', src: '102.jpeg'},
-                { type: 'image', src: '103.jpeg'},
-                { type: 'image', src: '104.jpeg'},
-                { type: 'image', src: '105.jpeg'},
-                { type: 'image', src: '106.jpeg'},
-                { type: 'image', src: '107.jpeg'},
-                { type: 'image', src: '108.jpeg'},
-                { type: 'image', src: '109.jpeg'},
-                { type: 'image', src: '110.jpeg'},
-                { type: 'image', src: '111.jpeg'},
-                { type: 'image', src: '112.jpeg'},
-                { type: 'image', src: '113.jpeg'},
-                { type: 'image', src: '114.webp'},
-                { type: 'image', src: '115.jpeg'},
-                { type: 'image', src: '116.webp'},
-                { type: 'image', src: '117.jpeg'},
-                { type: 'image', src: '118.jpeg'},
-                { type: 'image', src: '119.jpeg'},
-                { type: 'image', src: '120.jpeg'},
-                { type: 'image', src: '121.jpeg'},
-                { type: 'image', src: '122.jpeg'},
-                { type: 'image', src: '123.jpeg'},
-                { type: 'image', src: '124.jpeg'},
-                { type: 'image', src: '125.jpeg'},
-                { type: 'image', src: '126.jpeg'},
-                { type: 'image', src: '127.jpeg'},
-                { type: 'image', src: '128.jpeg'},
-                { type: 'image', src: '129.jpeg'},
-                { type: 'image', src: '130.jpeg'},
-                { type: 'image', src: '131.jpeg'},
-                { type: 'image', src: '132.jpeg'},
-                { type: 'image', src: '133.jpeg'},
-                { type: 'image', src: '134.jpeg'},
-                { type: 'image', src: '135.jpeg'},
-                { type: 'image', src: '136.jpeg'},
-                { type: 'image', src: '137.jpeg'},
-                { type: 'image', src: '138.jpeg'},
-                { type: 'image', src: '139.jpeg'},
-                { type: 'image', src: '140.jpeg'},
-                { type: 'image', src: '141.jpeg'},
-                { type: 'image', src: '142.jpeg'},
-                { type: 'image', src: '143.jpeg'},
-                { type: 'image', src: '144.jpeg'},
-                { type: 'image', src: '145.jpeg'},
-                { type: 'image', src: '146.jpeg'},
-                { type: 'image', src: '147.jpeg'},
-                { type: 'image', src: '148.jpeg'},
-                { type: 'image', src: '149.jpeg'},
-                { type: 'image', src: '150.jpeg'},
-                { type: 'image', src: '151.jpeg'},
-                { type: 'image', src: '152.jpeg'},
-                { type: 'image', src: '153.jpeg'},
-                { type: 'image', src: '154.jpeg'},
-                { type: 'image', src: '155.jpeg'},
-                { type: 'image', src: '156.jpeg'},
-                { type: 'image', src: '157.jpeg'},
-                { type: 'image', src: '158.jpeg'},
-                { type: 'image', src: '159.jpeg'},
-                { type: 'image', src: '160.webp'},
-                { type: 'image', src: '161.jpeg'},
-                { type: 'image', src: '162.jpeg'},
-                { type: 'image', src: '163.jpeg'},
-                { type: 'image', src: '164.jpeg'},
-                { type: 'image', src: '165.jpeg'},
-                { type: 'image', src: '166.jpeg'},
-                { type: 'image', src: '167.jpeg'},
-                { type: 'image', src: '168.jpeg'},
-                { type: 'image', src: '169.jpeg'},
-                { type: 'image', src: '170.jpeg'},
-                { type: 'image', src: '171.jpeg'},
-                { type: 'image', src: '172.jpeg'},
-                { type: 'image', src: '173.jpeg'},
-                { type: 'image', src: '174.jpeg'},
-                { type: 'image', src: '175.jpeg'},
-                { type: 'image', src: '176.jpeg'},
-                { type: 'image', src: '177.jpeg'},
-                { type: 'image', src: '178.jpeg'},
-                { type: 'image', src: '179.jpeg'},
-                { type: 'image', src: '180.jpeg'},
-                { type: 'image', src: '181.jpeg'},
-                { type: 'image', src: '182.webp'},
-                { type: 'image', src: '183.jpeg'},
-                { type: 'image', src: '184.jpeg'},
-                { type: 'image', src: '185.webp'},
-                { type: 'image', src: '186.jpeg'},
-                { type: 'image', src: '187.webp'},
-                { type: 'image', src: '188.webp'},
-                { type: 'image', src: '189.jpeg'},
-                { type: 'image', src: '190.jpeg'},
-                { type: 'image', src: '191.jpeg'},
-                { type: 'image', src: '192.jpeg'},
-                { type: 'image', src: '193.jpeg'},
-                { type: 'image', src: '194.jpeg'},
-                { type: 'image', src: '195.jpeg'},
-                { type: 'image', src: '196.jpeg'},
-                { type: 'image', src: '197.jpeg'},
-                { type: 'image', src: '198.jpeg'},
-                { type: 'image', src: '199.jpeg'},
-                { type: 'image', src: '200.jpeg'},
-                { type: 'image', src: '201.jpeg'},
-                { type: 'image', src: '202.jpeg'},
-                { type: 'image', src: '203.jpeg'},
-                { type: 'image', src: '204.jpeg'},
-                { type: 'image', src: '205.jpeg'},
-                { type: 'image', src: '206.jpeg'},
-                { type: 'image', src: '207.jpeg'},
-                { type: 'image', src: '208.jpeg'},
-                { type: 'image', src: '209.jpeg'},
-                { type: 'image', src: '210.jpeg'},
-                { type: 'image', src: '211.jpeg'},
-                { type: 'image', src: '212.jpeg'},
-                { type: 'image', src: '213.jpeg'},
-                { type: 'image', src: '214.jpeg'},
-                { type: 'image', src: '215.jpeg'},
-                { type: 'image', src: '216.jpeg'},
-                { type: 'image', src: '217.jpeg'},
-                { type: 'image', src: '218.jpeg'},
-                { type: 'image', src: '219.jpeg'},
-                { type: 'image', src: '220.jpeg'},
-                { type: 'image', src: '221.jpeg'},
-                { type: 'image', src: '222.jpeg'},
-                { type: 'image', src: '223.jpeg'},
-                { type: 'image', src: '224.jpeg'},
-                { type: 'image', src: '225.jpeg'},
-                { type: 'image', src: '226.jpeg'},
-                { type: 'image', src: '227.jpeg'},
-                { type: 'image', src: '228.jpeg'},
-                { type: 'image', src: '229.jpeg'},
-                { type: 'image', src: '230.jpeg'},
-                { type: 'image', src: '231.webp'},
-                { type: 'image', src: '232.jpeg'},
-                { type: 'image', src: '233.jpeg'},
-                { type: 'image', src: '234.jpeg'},
-                { type: 'image', src: '235.jpeg'},
-                { type: 'image', src: '236.webp'},
-                { type: 'image', src: '237.jpeg'},
-                { type: 'image', src: '238.webp'},
-                { type: 'image', src: '239.jpeg'},
-                { type: 'image', src: '240.jpeg'},
-                { type: 'image', src: '241.webp'},
-                { type: 'image', src: '242.jpeg'},
-                { type: 'image', src: '243.jpeg'},
-                { type: 'image', src: '244.webp'},
-                { type: 'image', src: '245.jpeg'},
-                { type: 'image', src: '246.jpeg'},
-                { type: 'image', src: '247.jpeg'},
-                { type: 'image', src: '248.jpeg'},
-                { type: 'image', src: '249.jpeg'},
-                { type: 'image', src: '250.jpeg'},
-                { type: 'image', src: '251.jpeg'},
-                { type: 'image', src: '252.webp'},
-                { type: 'image', src: '253.jpeg'},
-                { type: 'image', src: '254.jpeg'},
-                { type: 'image', src: '255.jpeg'},
-                { type: 'image', src: '256.jpeg'},
-                { type: 'image', src: '257.jpeg'},
-                { type: 'image', src: '258.jpeg'},
-                { type: 'image', src: '259.jpeg'},
-                { type: 'image', src: '260.jpeg'},
-                { type: 'image', src: '261.jpeg'},
-                { type: 'image', src: '262.jpeg'},
-                { type: 'image', src: '263.jpeg'},
-                { type: 'image', src: '264.jpeg'},
-                { type: 'image', src: '265.jpeg'},
-                { type: 'image', src: '266.jpeg'},
-                { type: 'image', src: '267.jpeg'},
-                { type: 'image', src: '268.jpeg'},
-                { type: 'image', src: '269.jpeg'},
-                { type: 'image', src: '270.jpeg'},
-                { type: 'image', src: '271.jpeg'},
-                { type: 'image', src: '272.jpeg'},
-                { type: 'image', src: '273.jpeg'},
-                { type: 'image', src: '274.jpeg'},
-                { type: 'image', src: '275.jpeg'},
-                { type: 'image', src: '276.webp'},
-                { type: 'image', src: '277.jpeg'},
-                { type: 'image', src: '278.jpeg'},
-                { type: 'image', src: '279.jpeg'},
-                { type: 'image', src: '280.jpeg'},
-                { type: 'image', src: '281.jpeg'},
-                { type: 'image', src: '282.jpeg'},
-                { type: 'image', src: '283.jpeg'},
-                { type: 'image', src: '284.jpeg'},
-                { type: 'image', src: '285.jpeg'},
-                { type: 'image', src: '286.jpeg'},
-                { type: 'image', src: '287.jpeg'},
-                { type: 'image', src: '288.jpeg'},
-                { type: 'image', src: '289.jpeg'},
-                { type: 'image', src: '290.jpeg'},
-                { type: 'image', src: '291.jpeg'},
-                { type: 'image', src: '292.jpeg'},
-                { type: 'image', src: '293.jpeg'},
-                { type: 'image', src: '294.webp'},
-                { type: 'image', src: '295.jpeg'},
-                { type: 'image', src: '296.jpeg'},
-                { type: 'image', src: '297.jpeg'},
-                { type: 'image', src: '298.jpeg'},
-                { type: 'image', src: '299.jpeg'},
-                { type: 'image', src: '300.webp'},
-                { type: 'image', src: '301.jpeg'},
-                { type: 'image', src: '302.jpeg'},
-                { type: 'image', src: '303.jpeg'},
-                { type: 'image', src: '304.jpeg'},
-                { type: 'image', src: '305.jpeg'},
-                { type: 'image', src: '306.jpeg'},
-                { type: 'image', src: '307.jpeg'},
-                { type: 'image', src: '308.jpeg'},
-                { type: 'image', src: '309.jpeg'},
-                { type: 'image', src: '310.jpeg'},
-                { type: 'image', src: '311.webp'},
-                { type: 'image', src: '312.jpeg'},
-                { type: 'image', src: '313.jpeg'},
-                { type: 'image', src: '314.jpeg'},
-                { type: 'image', src: '315.jpeg'},
-                { type: 'image', src: '316.jpeg'},
-                { type: 'image', src: '317.jpeg'},
-                { type: 'image', src: '318.jpeg'},
-                { type: 'image', src: '319.webp'},
-                { type: 'image', src: '320.jpeg'},
-                { type: 'image', src: '321.jpeg'},
-                { type: 'image', src: '322.jpeg'},
-                { type: 'image', src: '323.webp'},
-                { type: 'image', src: '324.jpeg'},
-                { type: 'image', src: '325.jpeg'},
-                { type: 'image', src: '326.jpeg'},
-                { type: 'image', src: '327.jpeg'},
-                { type: 'image', src: '328.webp'},
-                { type: 'image', src: '329.jpeg'},
-                { type: 'image', src: '330.jpeg'},
-                { type: 'image', src: '331.jpeg'},
-                { type: 'image', src: '332.jpeg'},
-                { type: 'image', src: '333.jpeg'},
-                { type: 'image', src: '334.jpeg'},
-                { type: 'image', src: '335.jpeg'},
-                { type: 'image', src: '336.jpeg'},
-                { type: 'image', src: '337.webp'},
-                { type: 'image', src: '338.jpeg'},
-                { type: 'image', src: '339.webp'},
-                { type: 'image', src: '340.jpeg'},
-                { type: 'image', src: '341.jpeg'},
-                { type: 'image', src: '342.jpeg'},
-                { type: 'image', src: '343.jpeg'},
-                { type: 'image', src: '344.jpeg'},
-                { type: 'image', src: '345.jpeg'},
-                { type: 'image', src: '346.jpeg'},
-                { type: 'image', src: '347.jpeg'},
-                { type: 'image', src: '348.jpeg'},
-                { type: 'image', src: '349.jpeg'},
-                { type: 'image', src: '350.jpeg'},
-                { type: 'image', src: '351.jpeg'},
-                { type: 'image', src: '352.webp'},
-                { type: 'image', src: '353.jpeg'},
-                { type: 'image', src: '354.jpeg'},
-                { type: 'image', src: '355.jpeg'},
-                { type: 'image', src: '356.jpeg'},
-                { type: 'image', src: '357.jpeg'},
-                { type: 'image', src: '358.jpeg'},
-                { type: 'image', src: '359.jpeg'},
-                { type: 'image', src: '360.jpeg'},
-                { type: 'image', src: '361.jpeg'},
-                { type: 'image', src: '362.webp'},
-                { type: 'image', src: '363.jpeg'},
-                { type: 'image', src: '364.jpeg'},
-                { type: 'image', src: '365.jpeg'},
-                { type: 'image', src: '366.jpeg'},
-                { type: 'image', src: '367.webp'},
-                { type: 'image', src: '368.jpeg'},
-                { type: 'image', src: '369.jpeg'},
-                { type: 'image', src: '370.jpeg'},
-                { type: 'image', src: '371.jpeg'},
-                { type: 'image', src: '372.jpeg'},
-                { type: 'image', src: '373.jpeg'},
-                { type: 'image', src: '374.jpeg'},
-                { type: 'image', src: '375.jpeg'},
-                { type: 'image', src: '376.jpeg'},
-                { type: 'image', src: '377.webp'},
-                { type: 'image', src: '378.jpeg'},
-                { type: 'image', src: '379.jpeg'},
-                { type: 'image', src: '380.jpeg'},
-                { type: 'image', src: '381.jpeg'},
-                { type: 'image', src: '382.jpeg'},
-                { type: 'image', src: '383.webp'},
-                { type: 'image', src: '384.jpeg'},
-                { type: 'image', src: '385.jpeg'},
-                { type: 'image', src: '386.jpeg'},
-                { type: 'image', src: '387.webp'},
-                { type: 'image', src: '388.jpeg'},
-                { type: 'image', src: '389.jpeg'},
-                { type: 'image', src: '390.jpeg'},
-                { type: 'image', src: '391.webp'},
-                { type: 'image', src: '392.jpeg'},
-                { type: 'image', src: '393.jpeg'},
-                { type: 'image', src: '394.jpeg'},
-                { type: 'image', src: '395.webp'},
-                { type: 'image', src: '396.jpeg'},
-                { type: 'image', src: '397.jpeg'},
-                { type: 'image', src: '398.jpeg'},
-                { type: 'image', src: '399.jpeg'},
-                { type: 'image', src: '400.jpeg'},
-                { type: 'image', src: '401.jpeg'},
-                { type: 'image', src: '402.jpeg'},
-                { type: 'image', src: '403.jpeg'},
-                { type: 'image', src: '404.webp'},
-                { type: 'image', src: '405.webp'},
-                { type: 'image', src: '406.jpeg'},
-                { type: 'image', src: '407.jpeg'},
-                { type: 'image', src: '408.jpeg'},
-                { type: 'image', src: '409.jpeg'},
-                { type: 'image', src: '410.jpeg'},
-                { type: 'image', src: '411.jpeg'},
-                { type: 'image', src: '412.jpeg'},
-                { type: 'image', src: '413.jpeg'},
-                { type: 'image', src: '414.jpeg'},
-                { type: 'image', src: '415.jpeg'},
-                { type: 'image', src: '416.jpeg'},
-                { type: 'image', src: '417.jpeg'},
-                { type: 'image', src: '418.jpeg'},
-                { type: 'image', src: '419.jpeg'},
-                { type: 'image', src: '420.jpeg'},
-                { type: 'image', src: '421.jpeg'},
-                { type: 'image', src: '422.jpeg'},
-                { type: 'image', src: '423.jpeg'},
-                { type: 'image', src: '424.jpeg'},
-                { type: 'image', src: '425.jpeg'},
-                { type: 'image', src: '426.jpeg'},
-                { type: 'image', src: '427.jpeg'},
-                { type: 'image', src: '428.jpeg'},
-                { type: 'image', src: '429.jpeg'},
-                { type: 'image', src: '430.jpeg'},
-                { type: 'image', src: '431.jpeg'},
-                { type: 'image', src: 'q1.jpg'},
-                { type: 'image', src: 'q2.jpg'},
-                { type: 'image', src: 'q3.jpg'},
-                { type: 'image', src: 'q4.jpg'},
-                { type: 'image', src: 'q5.jpg'},
-                { type: 'image', src: 'q6.jpg'},
-                { type: 'image', src: 'q7.jpg'},
-                { type: 'image', src: 'q8.jpg'},
-                { type: 'image', src: 'q9.jpg'},
-                { type: 'image', src: 'q10.jpg'},
-                { type: 'image', src: 'q11.jpg'},
-                { type: 'image', src: 'q12.jpg'},
-                { type: 'image', src: 'q13.jpg'},
-                { type: 'image', src: 'q14.jpg'},
-                { type: 'image', src: 'q15.jpg'},
-                { type: 'image', src: 'q16.jpg'},
-                { type: 'image', src: 'q17.jpg'},
-                { type: 'image', src: 'q18.jpg'},
-                { type: 'image', src: 'q19.jpg'},
-                { type: 'image', src: 'q20.jpg'},
-                { type: 'image', src: 'q21.jpg'},
-                { type: 'image', src: 'q22.jpg'},
-                { type: 'image', src: 'q23.jpg'},
-                { type: 'image', src: 'q24.jpg'},
-                { type: 'image', src: 'q25.jpg'},
-                { type: 'image', src: 'q26.jpg'},
-                { type: 'image', src: 'q27.jpg'},
-                { type: 'image', src: 'q28.jpg'},
-                { type: 'image', src: 'q29.jpg'},
-                { type: 'image', src: 'q30.jpg'},
-                { type: 'image', src: 'q31.jpg'},
-                { type: 'image', src: 'q32.jpg'},
-                { type: 'image', src: 'q33.jpg'},
-                { type: 'image', src: 'q34.jpg'},
-                { type: 'image', src: 'q35.jpg'},
-                { type: 'image', src: 'q36.jpg'},
-                { type: 'image', src: 'q37.jpg'},
-                { type: 'image', src: 'q38.jpg'},
-                { type: 'image', src: 'q39.jpg'},
-                { type: 'image', src: 'q40.jpg'},
-                { type: 'image', src: 'q41.jpg'},
-                { type: 'image', src: 'q42.jpg'},
-                { type: 'image', src: 'q43.jpg'},
-                { type: 'image', src: 'q44.jpg'},
-                { type: 'image', src: 'q45.jpg'},
-                { type: 'image', src: 'q46.jpg'},
-                { type: 'image', src: 'q47.jpg'},
-                { type: 'image', src: 'q48.jpg'},
-                { type: 'image', src: 'q49.jpg'},
-                { type: 'image', src: 'q50.jpg'},
-                { type: 'image', src: 'q51.jpg'},
-                { type: 'image', src: 'q52.jpg'},
-                { type: 'image', src: 'q53.jpg'},
-                { type: 'image', src: 'q54.jpg'},
-                { type: 'image', src: 'q55.jpg'},
-                { type: 'image', src: 'q56.jpg'},
-                { type: 'image', src: 'q57.jpg'},
-                { type: 'image', src: 'q58.jpg'},
-                { type: 'image', src: 'q59.jpg'},
-                { type: 'image', src: 'q60.jpg'},
-                { type: 'image', src: 'q61.jpg'},
-                { type: 'image', src: 'q62.jpg'},
-                { type: 'image', src: 'q63.jpg'},
-                { type: 'image', src: 'q64.jpg'},
-                { type: 'image', src: 'q65.jpg'},
-                { type: 'image', src: 'q66.jpg'},
-                { type: 'image', src: 'q67.jpg'},
-                { type: 'image', src: 'q68.jpg'},
-                { type: 'image', src: 'q69.jpg'},
-                { type: 'image', src: 'q70.jpg'},
-                { type: 'image', src: 'q71.jpg'},
-                { type: 'image', src: 'q72.jpg'},
-                { type: 'image', src: 'q73.jpg'},
-                { type: 'image', src: 'q74.jpg'},
-                { type: 'image', src: 'q75.jpg'},
-                { type: 'image', src: 'q76.jpg'},
-                { type: 'image', src: 'q77.jpg'},
-                { type: 'image', src: 'q78.jpg'},
-                { type: 'image', src: 'q79.jpg'},
-                { type: 'image', src: 'q80.jpg'},
-                { type: 'image', src: 'q81.jpg'},
-                { type: 'image', src: 'q82.jpg'},
-                { type: 'image', src: 'q83.jpg'},
-                { type: 'image', src: 'q84.jpg'},
-                { type: 'image', src: 'q85.jpg'},
-                { type: 'image', src: 'q86.jpg'},
-                { type: 'image', src: 'q87.jpg'},
-                { type: 'image', src: 'q88.jpg'},
-                { type: 'image', src: 'q89.jpg'},
-                { type: 'image', src: 'q90.jpg'},
-                { type: 'image', src: 'q91.jpg'},
-                { type: 'image', src: 'q92.jpg'},
-                { type: 'image', src: 'q93.jpg'},
-                { type: 'image', src: 'q94.jpg'},
-                { type: 'image', src: 'q95.jpg'},
-                { type: 'image', src: 'q96.jpg'},
-                { type: 'image', src: 'q97.jpg'},
-                { type: 'image', src: 'q98.jpg'},
-                { type: 'image', src: 'q99.jpg'},
-                { type: 'image', src: 'q100.jpg'},
-                { type: 'image', src: 'q101.jpg'},
-                { type: 'image', src: 'q102.jpg'},
-                { type: 'image', src: 'q103.jpg'},
-                { type: 'image', src: 'q104.jpg'},
-                { type: 'image', src: 'q105.jpg'},
-                { type: 'image', src: 'q106.jpg'},
-                { type: 'image', src: 'q107.jpg'},
-                { type: 'image', src: 'q108.jpg'},
-                { type: 'image', src: 'q109.jpg'},
-                { type: 'image', src: 'q110.jpg'},
-                { type: 'image', src: 'q111.jpg'},
-                { type: 'image', src: 'q112.jpg'},
-                { type: 'image', src: 'q113.jpg'},
-                { type: 'image', src: 'q114.jpg'},
-                { type: 'image', src: 'q115.jpg'},
-                { type: 'image', src: 'q116.jpg'},
-                { type: 'image', src: 'q117.jpg'},
-                { type: 'image', src: 'q118.jpg'},
-                { type: 'image', src: 'q119.jpg'},
-                { type: 'image', src: 'q120.jpg'},
-                { type: 'image', src: 'q121.jpg'},
-                { type: 'image', src: 'q122.jpg'},
-                { type: 'image', src: 'q123.jpg'},
-                { type: 'image', src: 'q124.jpg'},
-                { type: 'image', src: 'q125.jpg'},
-                { type: 'image', src: 'q126.jpg'},
-                { type: 'image', src: 'q127.jpg'},
-                { type: 'image', src: 'q128.jpg'},
-                { type: 'image', src: 'q129.jpg'},
-                { type: 'image', src: 'q130.jpg'},
-                { type: 'image', src: 'q131.jpg'},
-                { type: 'image', src: 'q132.jpg'},
-                { type: 'image', src: 'q133.jpg'},
-                { type: 'image', src: 'q134.jpg'},
-                { type: 'image', src: 'q135.jpg'},
-                { type: 'image', src: 'q136.jpg'},
-                { type: 'image', src: 'q137.jpg'},
-                { type: 'image', src: 'q138.jpg'},
-                { type: 'image', src: 'q139.jpg'},
-                { type: 'image', src: 'q140.jpg'},
-                { type: 'image', src: 'q141.jpg'},
-                { type: 'image', src: 'q142.jpg'},
-                { type: 'image', src: 'DSC_0502.png'}, 
-                { type: 'image', src: 'DSC_0504.png'},
-                { type: 'image', src: 'DSC_0507.png'},
-                { type: 'image', src: 'DSC_0508.png'},
-                { type: 'image', src: 'DSC_0509.jpg'},
-                { type: 'image', src: 'DSC_0510.jpg'},
-                { type: 'image', src: 'DSC_0511.jpg'},
-                { type: 'image', src: 'DSC_0513.jpg'},
-                { type: 'image', src: 'DSC_0515.jpg'},
-                { type: 'image', src: 'DSC_0516.jpg' },
-                { type: 'image', src: 'DSC_0520.jpg' },
-                { type: 'image', src: 'DSC_0523.jpg' },
-                { type: 'image', src: 'DSC_0524.jpg' },
-                { type: 'image', src: 'DSC_0525.jpg' },
-                { type: 'image', src: 'DSC_0528.jpg' },
-                { type: 'image', src: 'DSC_0534.jpg' },
-                { type: 'image', src: 'DSC_0537.jpg' },
-                { type: 'image', src: 'DSC_0538.jpg' },
-                { type: 'image', src: 'DSC_0542.jpg' },
-                { type: 'image', src: 'DSC_0543.jpg' },
-                { type: 'image', src: 'DSC_0547.jpg' },
-                { type: 'image', src: 'DSC_0548.jpg' },
-                { type: 'image', src: 'DSC_0550.jpg' },
-                { type: 'image', src: 'DSC_0551.jpg' },
-                { type: 'image', src: 'DSC_0554.jpg' },
-                { type: 'image', src: 'DSC_0555.jpg' },
-                { type: 'image', src: 'DSC_0556.jpg' },
-                { type: 'image', src: 'DSC_0558.jpg' },
-                { type: 'image', src: 'DSC_0559.jpg' },
-                { type: 'image', src: 'DSC_0561.jpg' },
-                { type: 'image', src: 'DSC_0562.jpg' },
-                { type: 'image', src: 'DSC_0565.jpg' },
-                { type: 'image', src: 'DSC_0566.jpg' },
-                { type: 'image', src: 'DSC_0567.jpg' },
-                { type: 'image', src: 'DSC_0568.jpg' },
-                { type: 'image', src: 'DSC_0569.jpg' },
-                { type: 'image', src: 'DSC_0570.jpg' },
-                { type: 'image', src: 'DSC_0572.jpg' },
-                { type: 'image', src: 'DSC_0574.jpg' },
-                { type: 'image', src: 'DSC_0575.jpg' },
-                { type: 'image', src: 'DSC_0576.jpg' },
-                { type: 'image', src: 'DSC_0578.jpg' },
-                { type: 'image', src: 'DSC_0579.jpg' },
-                { type: 'image', src: 'DSC_0588.jpg' },
-                { type: 'image', src: 'DSC_0590.jpg' },
-                { type: 'image', src: 'DSC_0710.jpg' },
-                { type: 'image', src: 'DSC_0711.jpg' },
-                { type: 'image', src: 'DSC_0716.jpg' },
-                { type: 'image', src: 'DSC_0717.jpg' },
-                { type: 'image', src: 'DSC_0725.jpg' },
-                { type: 'image', src: 'DSC_0727.jpg' },
-                { type: 'image', src: 'DSC_0728.jpg' },
-                { type: 'image', src: 'DSC_0730.jpg' },
-                { type: 'image', src: 'DSC_0731.jpg' },
-                { type: 'image', src: 'DSC_0733.jpg' },
-                { type: 'image', src: 'DSC_0734.jpg' },
-                { type: 'image', src: 'DSC_0735.jpg' },
-                { type: 'image', src: 'DSC_0788.jpg' },
-                { type: 'image', src: 'DSC_0789.jpg' },
-                { type: 'image', src: 'DSC_0790.jpg' },
-                { type: 'image', src: 'DSC_0792.jpg' },
-                { type: 'image', src: 'DSC_0793.jpg' },
-                { type: 'image', src: 'DSC_0796.jpg' },
-                { type: 'image', src: 'DSC_0797.jpg' },
-                { type: 'image', src: 'DSC_0798.jpg' },
-                { type: 'image', src: 'DSC_0799.jpg' },
-                { type: 'image', src: 'DSC_0800.jpg' },
-                { type: 'image', src: 'DSC_0801.jpg' },
-                { type: 'image', src: 'DSC_0802.jpg' },
-                { type: 'image', src: 'DSC_0805.jpg' },
-                { type: 'image', src: 'DSC_0806.jpg' },
-                { type: 'image', src: 'DSC_0814.jpg' },
-                { type: 'image', src: 'DSC_0816.jpg' },
-                { type: 'image', src: 'DSC_0817.jpg' },
-                { type: 'image', src: 'DSC_0823.jpg' },
-                { type: 'image', src: 'DSC_0830.jpg' },
-                { type: 'image', src: 'DSC_0831.jpg' },
-                { type: 'image', src: 'DSC_0834.jpg' },
-                { type: 'image', src: 'DSC_0835.jpg' },
-                { type: 'image', src: 'DSC_0837.jpg' },
-                { type: 'image', src: 'DSC_0840.jpg' },
-                { type: 'image', src: 'DSC_0843.jpg' },
-                { type: 'image', src: 'DSC_0844.jpg' },
-                { type: 'image', src: 'DSC_0851.jpg' },
-                { type: 'image', src: 'DSC_0852.jpg' },
-                { type: 'image', src: 'DSC_0854.jpg' },
-                { type: 'image', src: 'DSC_0856.jpg' },
-                { type: 'image', src: 'DSC_0858.jpg' },
-                { type: 'image', src: 'DSC_0859.jpg' },
-                { type: 'image', src: 'DSC_0860.jpg' },
-                { type: 'image', src: 'DSC_0862.jpg' },
-                { type: 'image', src: 'DSC_0863.jpg' },
-                { type: 'image', src: 'DSC_0864.jpg' },
-                { type: 'image', src: 'DSC_0865.jpg' },
-                { type: 'image', src: 'DSC_0866.jpg' },
-                { type: 'image', src: 'DSC_0869.jpg' },
-                { type: 'image', src: 'DSC_0874.jpg' },
-                { type: 'image', src: 'DSC_0876.jpg' },
-                { type: 'image', src: 'DSC_0877.jpg' },
-                { type: 'image', src: 'DSC_0878.jpg' },
-                { type: 'image', src: 'DSC_0879.jpg' },
-                { type: 'image', src: 'DSC_0880.jpg' },
-                { type: 'image', src: 'DSC_0881.jpg' },
-                { type: 'image', src: 'DSC_0883.jpg' },
-                { type: 'image', src: 'DSC_0884.jpg' },
-                { type: 'image', src: 'DSC_0885.jpg' },
-                { type: 'image', src: 'DSC_0890.jpg' },
-                { type: 'image', src: 'DSC_0891.jpg' },
-                { type: 'video', src: 'v1.mp4' },
-                { type: 'video', src: 'v2.mp4' },
-                { type: 'video', src: 'v3.mp4' },
-                { type: 'video', src: 'v4.mp4' },
-                { type: 'video', src: 'v5.mp4' },
-                { type: 'video', src: 'v6.mp4' },
-                { type: 'video', src: 'v8.mp4' },
-                { type: 'video', src: 'v9.mp4' },
-                { type: 'video', src: 'v10.mp4' },
-                { type: 'video', src: 'v11.mp4' },
-                { type: 'video', src: 'v12.mp4' },
-                { type: 'video', src: 'v13.mp4' },
-                { type: 'video', src: 'v14.mp4' },
-                { type: 'video', src: 'v15.mp4' },
-                { type: 'video', src: 'v16.mp4' },
-                { type: 'video', src: 'v17.mp4' },
-                { type: 'video', src: 'v18.mp4' },
-                { type: 'video', src: 'v19.mp4' },
-                { type: 'video', src: 'v20.mp4' },
-                { type: 'video', src: 'v21.mp4' },
-                { type: 'video', src: 'v22.mp4' },
-                { type: 'video', src: 'v23.mp4' },
-                { type: 'video', src: 'v24.mp4' },
-                { type: 'video', src: 'v25.mp4' },
-                { type: 'video', src: 'v26.mp4' },
-                { type: 'video', src: 'v27.mp4' },
-                { type: 'video', src: 'v28.mp4' },
-                { type: 'video', src: 'v29.mp4' },
-                { type: 'video', src: 'v30.mp4' },
-                { type: 'video', src: 'v31.mp4' },
-                { type: 'video', src: 'v32.mp4' },
-                { type: 'video', src: 'v33.mp4' },
-                { type: 'video', src: 'v34.mp4' },
-                { type: 'video', src: 'v35.mp4' },
-                { type: 'video', src: 'v36.mp4' },
-                { type: 'video', src: 'v37.mp4' },
-                { type: 'video', src: 'v38.mp4' },
-                { type: 'video', src: 'v39.mp4' },
-                { type: 'video', src: 'v40.mp4' },
-                { type: 'video', src: 'v41.mp4' },
-                { type: 'video', src: 'v42.mp4' },
-                { type: 'video', src: 'v43.mp4' },
-                { type: 'video', src: 'v44.mp4' },
-                { type: 'video', src: 'v45.mp4' },
-                { type: 'video', src: 'v46.mp4' },
-                { type: 'video', src: 'v47.mp4' },
-                { type: 'video', src: 'v48.mp4' },
-                { type: 'video', src: 'v49.mp4' },
-                { type: 'video', src: 'v50.mp4' },
-                { type: 'video', src: 'v51.mp4' },
+       function toggleSection(sectionId) {
+    const images = document.getElementById("images-section");
+    const videos = document.getElementById("videos-section");
 
-                // Add more items here...
-            ];
+    // Hide both first
+    images.style.display = "none";
+    videos.style.display = "none";
 
-        const imagesSection = $('#images-section');
-        const videosSection = $('#videos-section');
+    // Show the correct layout
+    if (sectionId === "images-section") {
+        images.style.display = "block";   // Masonry needs block
+    } else {
+        videos.style.display = "grid";    // Videos stay grid
+    }
 
-            // Dynamically generate gallery items
-            galleryData.forEach(item => {
-                const galleryItem = $('<div class="gallery-item"></div>');
-                
-                if (item.type === 'image') {
-                    galleryItem.attr('data-fancybox', 'images-gallery');
-                    galleryItem.attr('data-src', item.src);
+    document.getElementById("tab-images").classList.toggle("active", sectionId === "images-section");
+    document.getElementById("tab-videos").classList.toggle("active", sectionId === "videos-section");
+}
 
-                    const img = $(`<img src="${item.src}" alt="Image">`);
-                    galleryItem.append(img);
-                    imagesSection.append(galleryItem);
-                } else if (item.type === 'video') {
-                    galleryItem.attr('data-fancybox', 'videos-gallery');
-                    galleryItem.attr('data-src', item.src);
+        document.addEventListener("DOMContentLoaded", function() {
+            const statusBox = document.getElementById('diagnostic-box');
+            const imagesSection = document.getElementById('images-section');
+            const videosSection = document.getElementById('videos-section');
+            
+            // FOLDER PATH CONFIGURATIONS
+            const imgPath = "assets/images/";
+            const videoPath = "assets/videos/";
 
-                    const video = $(`
-                        <video width="100%" height="200" controls>
-                            <source src="${item.src}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    `);
-                    galleryItem.append(video);
-                    videosSection.append(galleryItem);
+            let imageCount = 0;
+            let videoCount = 0;
+
+            try {
+                // 1. Unique Base Images Array
+                const uniqueImages = ['t1.jpg', 't2.jpg', 't3.jpg', 't4.jpg', 't5.jpg', 't6.jpg', 't7.jpg', 't8.jpg', 't9.jpg', 'tb1.jpg', 'tb2.jpg', 'tg1.jpg', 'tg2.jpg', 'Thales boys.jpg', 'Thales.jpg'];
+                uniqueImages.forEach(src => {
+                    appendImageItem(imgPath + src);
+                    imageCount++;
+                });
+
+                // 2. Sequential Numbered Items Loop (1 to 76)
+                const webpImages =[1,8,39,40,47,48,79,114,116,160,182,185,188,231,236,241,244,252,276,294,300,311,319,323,328,339,352,362,367,377,383,387,391,395,404,405,];
+                for (let i = 1; i <= 76; i++) {
+                    if(i === 68) continue;
+
+                    let ext = webpImages.includes(i) ? 'webp' : 'jpeg';
+                    appendImageItem(imgPath + i + '.' + ext);
+                    imageCount++;
                 }
+
+                // 3. 'Q' Sequential Loop (q77.jpg to q142.jpg)
+                for (let q = 77; q <= 142; q++) {
+                    appendImageItem(imgPath + 'q' + q + '.jpg');
+                    imageCount++;
+                }
+
+                // 4. Camera DSC Ranges (Cleaned and aligned formatting)
+                const dscRanges = [
+                    { s: 502, e: 534 }, { s: 537, e: 538 }, { s: 542, e: 543 },
+                    { s: 547, e: 548 }, { s: 550, e: 551 }, { s: 554, e: 556 },
+                    { s: 558, e: 559 }, { s: 561, e: 562 }, { s: 565, e: 570 },
+                    { s: 572, e: 572 }, { s: 574, e: 576 }, { s: 578, e: 579 },
+                    { s: 588, e: 590 }, { s: 710, e: 711 }, { s: 716, e: 717 },
+                    { s: 725, e: 725 }, { s: 727, e: 728 }, { s: 730, e: 731 },
+                    { s: 733, e: 735 }, { s: 788, e: 790 }, { s: 792, e: 793 },
+                    { s: 796, e: 802 }, { s: 805, e: 806 }, { s: 814, e: 814 },
+                    { s: 816, e: 817 }, { s: 823, e: 823 }, { s: 830, e: 831 },
+                    { s: 834, e: 835 }, { s: 837, e: 837 }, { s: 840, e: 840 },
+                    { s: 843, e: 844 }, { s: 851, e: 852 }, { s: 854, e: 854 },
+                    { s: 856, e: 856 }, { s: 858, e: 860 }, { s: 862, e: 866 },
+                    { s: 869, e: 869 }, { s: 874, e: 874 }, { s: 876, e: 881 },
+                    { s: 883, e: 885 }, { s: 890, e: 891 }
+                ];
                 
-            });
+                dscRanges.forEach(range => {
+                    for (let num = range.s; num <= range.e; num++) {
+                        let formattedNum = String(num).padStart(4, '0');
+                        let ext = (num >= 502 && num <= 508) ? 'png' : 'jpg';
+                        appendImageItem(imgPath + 'DSC_' + formattedNum + '.' + ext);
+                        imageCount++;
+                    }
+                });
 
-            // Initialize Fancybox for images
-            $("[data-fancybox='images-gallery']").fancybox({
-                animationEffect: "fade",
-                transitionEffect: "slide",
-                loop: true,
-                buttons: [
-                    "slideShow",
-                    "fullScreen",
-                    "thumbs",
-                    "close"
-                ]
-            });
+                // 5. Videos Sequential Loop (v1.mp4 to v51.mp4)
+                for (let v = 1; v <= 51; v++) {
+                    if (v === 7) continue;
+                    appendVideoItem(videoPath + 'v' + v + '.mp4');
+                    videoCount++;
+                }
 
-            // Initialize Fancybox for videos
-            $("[data-fancybox='videos-gallery']").fancybox({
-                animationEffect: "fade",
-                transitionEffect: "slide",
-                loop: true,
-                buttons: [
-                    "fullScreen",
-                    "thumbs",
-                    "close"
-                ]
-            });
-             // Initialize Fancybox for members
-        $("[data-fancybox='member-gallery']").fancybox({
-            animationEffect: "fade",
-            transitionEffect: "slide",
-            loop: true,
-            buttons: [
-                "fullScreen",
-                "thumbs",
-                "close"
-            ]
-        });
+            } catch (err) {
+                statusBox.innerHTML = `❌ Error running layout engine: ${err.message}`;
+                statusBox.style.borderColor = "#ff4d4d";
+                statusBox.style.color = "#ff4d4d";
+            }
 
-            // Show initial section
-            toggleSection('images-section');
-        });
+            function appendImageItem(src) {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                div.innerHTML = `
+    <img
+        src="${src}"
+        alt="Thales Memory"
+        loading="lazy"
+        onerror="this.parentElement.style.display='none';"
+    >
+`;
+                imagesSection.appendChild(div);
+            }
 
-        function toggleSection(sectionId) {
-            $('.gallery-section').hide();
-            $('#' + sectionId).show();
+            function appendVideoItem(src) {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                div.innerHTML = `
+<div class="video-card">
+    <video src="${src}" preload="metadata"></video>
+
+    <div class="video-play">▶</div>
+</div>
+`;
+const drawer=document.getElementById("drawer");
+
+menuBtn.onclick=()=>drawer.classList.add("open");
+
+closeDrawer.onclick=()=>drawer.classList.remove("open");
+
+const track=document.querySelector(".carousel-track");
+
+const featuredSlides=document.querySelectorAll(".carousel-track img");
+
+let featuredIndex=0;
+
+function updateCarousel(){
+
+track.style.transform=`translateX(-${featuredIndex*100}%)`;
+
+}
+
+document.querySelector(".next").onclick=()=>{
+
+featuredIndex=(featuredIndex+1)%featuredSlides.length;
+
+updateCarousel();
+
+};
+
+document.querySelector(".prev").onclick=()=>{
+
+featuredIndex=(featuredIndex-1+featuredSlides.length)%featuredSlides.length;
+
+updateCarousel();
+
+};
+
+setInterval(()=>{
+
+featuredIndex=(featuredIndex+1)%featuredSlides.length;
+
+updateCarousel();
+
+},5000);
+
+                videosSection.appendChild(div);
+            }
+                        // Hero Slideshow
+            const slides = document.querySelectorAll(".slide");
+            let currentSlide = 0;
+
+            setInterval(() => {
+                slides[currentSlide].classList.remove("active");
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add("active");
+            }, 4000);
+
+            const images=()=>Array.from(document.querySelectorAll("#images-section img"));
+
+let currentImage=0;
+
+document.addEventListener("click",(e)=>{
+
+if(e.target.matches("#images-section img")){
+
+const list=images();
+
+currentImage=list.indexOf(e.target);
+
+lightbox.style.display="flex";
+
+lightboxImg.src=e.target.src;
+
+}
+
+});
+
+function showImage(){
+
+lightboxImg.src=images()[currentImage].src;
+
+}
+
+document.querySelector(".lb-next").onclick=()=>{
+
+currentImage=(currentImage+1)%images().length;
+
+showImage();
+
+};
+
+document.querySelector(".lb-prev").onclick=()=>{
+
+currentImage=(currentImage-1+images().length)%images().length;
+
+showImage();
+
+};
+
+lightbox.onclick = (e)=>{
+    if(e.target===lightbox){
+        lightbox.style.display="none";
+    }
+};
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("keyup",()=>{
+
+const value = searchInput.value.toLowerCase();
+
+document.querySelectorAll("#images-section .gallery-item").forEach(item=>{
+
+const img=item.querySelector("img");
+
+if(img.src.toLowerCase().includes(value)){
+item.style.display="";
+}else{
+item.style.display="none";
+}
+
+});
+
+});
+const observer=new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("show");
+
+}
+
+});
+
+},{ 
+
+threshold:.1
+});
+
+const observeGallery=()=>{
+
+document.querySelectorAll(".gallery-item").forEach(item=>{
+
+observer.observe(item);
+
+});
+
+};
+
+setTimeout(observeGallery,500);
+document.getElementById("topBtn").onclick=()=>{
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+};
+document.querySelectorAll(".counter").forEach(counter=>{
+
+const target=+counter.dataset.target;
+
+let count=0;
+
+const update=()=>{
+
+count+=Math.ceil(target/40);
+
+if(count>target)count=target;
+
+counter.innerText=count+"+";
+
+if(count<target)requestAnimationFrame(update);
+
+};
+
+update();
+
+});
+document.addEventListener("click",function(e){
+
+    if(e.target.classList.contains("video-play")){
+
+        const video=e.target.previousElementSibling;
+
+        if(video.paused){
+
+            video.play();
+
+            e.target.style.opacity="0";
+
+        }else{
+
+            video.pause();
+
+            e.target.style.opacity="1";
+
         }
-    </script>
 
+    }
+
+});
+
+        });
+    </script>
 </body>
 </html>
