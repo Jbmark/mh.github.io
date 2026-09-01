@@ -214,12 +214,18 @@ nav a.active{
     box-shadow:0 18px 40px rgba(30,58,95,.15);
 }
 
-        .gallery-item img, .gallery-item video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        .gallery-item img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+.gallery-item video{
+    width:100%;
+    display:block;
+    aspect-ratio:16/9;
+    object-fit:cover;
+}
         .gallery-item::after{
     content:"";
     position:absolute;
@@ -531,14 +537,34 @@ transition:.3s;
 
 @media(max-width:768px){
 
-.menu-btn{
-display:block;
-}
+    nav{
+        justify-content:space-between;
+        align-items:center;
+    }
 
-.nav-links{
-display:none;
-}
+    .menu-btn{
+        display:block;
+    }
 
+    .nav-links{
+        display:flex;
+        overflow-x:auto;
+        gap:8px;
+        scrollbar-width:none;
+        flex:1;
+        margin-left:10px;
+    }
+
+    .nav-links::-webkit-scrollbar{
+        display:none;
+    }
+
+    .nav-links a{
+        white-space:nowrap;
+        font-size:.9rem;
+        padding:10px 14px;
+    }
+}
 }
 .featured{
 max-width:1200px;
@@ -729,11 +755,11 @@ cursor:pointer;
 
 <div class="carousel-track">
 
-<img src="t2.jpg">
-
-<img src="t1.jpg">
-
 <img src="Thales.jpg">
+
+<img src="tg1.jpg">
+
+<img src="tb1.jpg">
 
 </div>
 
@@ -780,16 +806,11 @@ cursor:pointer;
         </section>
     </div>
 
-    <div id="lightbox" class="lightbox">
-
-<button class="lb-prev">‹</button>
-
-<img id="lightbox-image">
-
-<button class="lb-next">›</button>
-
-<span class="close-lightbox">&times;</span>
-
+   <div id="lightbox" class="lightbox">
+    <button class="lb-prev">‹</button>
+    <img id="lightbox-image">
+    <button class="lb-next">›</button>
+    <span class="close-lightbox">&times;</span>
 </div>
 
     <span class="close-lightbox">&times;</span>
@@ -970,16 +991,30 @@ cursor:pointer;
             }
 
             function appendVideoItem(src) {
-                const div = document.createElement('div');
-                div.className = 'gallery-item';
-                div.innerHTML = `
-<div class="video-card">
-    <video src="${src}" preload="metadata"></video>
+    const div = document.createElement("div");
+    div.className = "gallery-item";
 
-    <div class="video-play">▶</div>
-</div>
-`;
-const drawer=document.getElementById("drawer");
+    div.innerHTML = `
+        <video
+            src="${src}"
+            controls
+            playsinline
+            preload="metadata"
+        ></video>
+    `;
+
+    videosSection.appendChild(div);
+}
+                        // Hero Slideshow
+            const slides = document.querySelectorAll(".slide");
+            let currentSlide = 0;
+
+            setInterval(() => {
+                slides[currentSlide].classList.remove("active");
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add("active");
+            }, 4000);
+            const drawer=document.getElementById("drawer");
 
 menuBtn.onclick=()=>drawer.classList.add("open");
 
@@ -1021,18 +1056,10 @@ updateCarousel();
 
 },5000);
 
-                videosSection.appendChild(div);
-            }
-                        // Hero Slideshow
-            const slides = document.querySelectorAll(".slide");
-            let currentSlide = 0;
-
-            setInterval(() => {
-                slides[currentSlide].classList.remove("active");
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add("active");
-            }, 4000);
-
+            
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-image");
+const closeLightbox = document.querySelector(".close-lightbox");
             const images=()=>Array.from(document.querySelectorAll("#images-section img"));
 
 let currentImage=0;
@@ -1079,6 +1106,9 @@ lightbox.onclick = (e)=>{
     if(e.target===lightbox){
         lightbox.style.display="none";
     }
+};
+            closeLightbox.onclick = () => {
+    lightbox.style.display = "none";
 };
 const searchInput = document.getElementById("searchInput");
 
